@@ -6,22 +6,22 @@
     <title>Rouge Singapore Payslip</title>
     <style>
         body {font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; padding: 30px;}
-        .container {max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 6px 25px rgba(0,0,0,0.15);}
-        .header {text-align: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 20px; margin-bottom: 30px;}
-        h1 {color: #1e3a8a; font-size: 28px; margin: 0;}
-        .company-name {font-size: 24px; font-weight: bold; color: #1e3a8a;}
-        .pay-period {text-align: center; font-size: 18px; color: #334155; margin: 15px 0; font-weight: 600;}
+        .container {max-width: 950px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 6px 25px rgba(0,0,0,0.15);}
+        .header {text-align: center; border-bottom: 4px solid #1e3a8a; padding-bottom: 20px; margin-bottom: 30px;}
+        h1 {color: #1e3a8a; margin: 0; font-size: 30px;}
+        .company-name {font-size: 26px; font-weight: bold; color: #1e3a8a;}
+        .pay-period {text-align: center; font-size: 19px; font-weight: 600; color: #334155; margin: 15px 0;}
         
         table {width: 100%; border-collapse: collapse; margin: 15px 0;}
-        th, td {padding: 14px 12px; text-align: left; border-bottom: 1px solid #ddd;}
+        th, td {padding: 14px 12px; border-bottom: 1px solid #ddd;}
         th {background: #1e3a8a; color: white;}
-        input[type="number"], input[type="text"] {width: 100%; border: none; background: transparent; font-size: 16px;}
+        input[type="number"], input[type="text"] {width: 100%; border: none; background: transparent; font-size: 16px; padding: 4px;}
         input[type="number"] {text-align: right;}
         
-        .result {background: #f0fdf4; border: 2px solid #166534; padding: 30px; margin-top: 30px; border-radius: 8px; text-align: center;}
-        .net-pay {font-size: 36px; font-weight: bold; color: #166534;}
+        .result {background: #f0fdf4; border: 3px solid #166534; padding: 35px; margin-top: 30px; border-radius: 10px; text-align: center;}
+        .net-pay {font-size: 38px; font-weight: bold; color: #166534;}
         
-        button {background: #1e3a8a; color: white; padding: 14px 40px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;}
+        button {background: #1e3a8a; color: white; padding: 15px 40px; font-size: 17px; border: none; border-radius: 6px; cursor: pointer;}
     </style>
 </head>
 <body>
@@ -32,17 +32,12 @@
             <div class="pay-period">Pay Period: <span id="displayPeriod">May 2026</span></div>
         </div>
 
-        <!-- Employee Info -->
         <table>
             <tr><td><strong>Employee Name</strong></td><td><input type="text" id="name" value="John Tan"></td></tr>
             <tr>
                 <td><strong>Pay Period</strong></td>
                 <td>
                     <select id="month" onchange="updatePeriod()">
-                        <option value="January">January</option>
-                        <option value="February">February</option>
-                        <option value="March">March</option>
-                        <option value="April">April</option>
                         <option value="May" selected>May</option>
                         <option value="June">June</option>
                         <option value="July">July</option>
@@ -52,20 +47,15 @@
                         <option value="November">November</option>
                         <option value="December">December</option>
                     </select>
-                    <input type="number" id="year" value="2026" onchange="updatePeriod()" style="width:90px;">
+                    <input type="number" id="year" value="2026" onchange="updatePeriod()" style="width:100px;">
                 </td>
             </tr>
         </table>
 
-        <!-- CPF Settings -->
         <div class="section">
             <h2>CPF Settings</h2>
-            <label>
-                <input type="checkbox" id="applyCPF" checked onchange="calculateAll()">
-                <strong>Apply CPF Contribution</strong>
-            </label><br><br>
-
-            <label><strong>Age Group</strong></label>
+            <input type="checkbox" id="applyCPF" checked onchange="calculateAll()"> <strong>Apply CPF Contribution</strong><br><br>
+            
             <select id="ageGroup" onchange="calculateAll()">
                 <option value="below55" selected>Below 55 years</option>
                 <option value="55-60">55 – 60 years</option>
@@ -75,7 +65,6 @@
             </select>
         </div>
 
-        <!-- Earnings -->
         <div class="section">
             <h2>Earnings</h2>
             <table>
@@ -85,13 +74,16 @@
                 <tr><td>Weekend</td><td><input type="number" id="weekendHours" value="20" oninput="calculateAll()"> hrs × <input type="number" id="weekendRate" value="35" oninput="calculateAll()">/hr</td><td><span id="weAmount">700.00</span></td></tr>
                 <tr><td>Public Holiday</td><td><input type="number" id="phHours" value="0" oninput="calculateAll()"> hrs × <input type="number" id="phRate" value="50" oninput="calculateAll()">/hr</td><td><span id="phAmount">0.00</span></td></tr>
                 <tr><td>Overtime</td><td><input type="number" id="otHours" value="0" oninput="calculateAll()"> hrs × <input type="number" id="otRate" value="37.5" oninput="calculateAll()">/hr</td><td><span id="otAmount">0.00</span></td></tr>
-                <tr><td>Transport Incentive</td><td></td><td><input type="number" id="transport" value="0" oninput="calculateAll()"></td></tr>
+                <tr><td>Transport Incentive</td><td><small>(Not subject to CPF)</small></td><td><input type="number" id="transport" value="0" oninput="calculateAll()"></td></tr>
                 <tr><td>Commission / Bonus</td><td></td><td><input type="number" id="commission" value="0" oninput="calculateAll()"></td></tr>
-                <tr style="background:#f1f5f9; font-weight:bold;"><td colspan="2">GROSS PAY</td><td><span id="gross">5200.00</span></td></tr>
+                
+                <tr style="background:#e0f2fe; font-weight:bold; font-size:18px;">
+                    <td colspan="2">TOTAL GROSS PAY</td>
+                    <td><span id="gross">5200.00</span></td>
+                </tr>
             </table>
         </div>
 
-        <!-- CPF -->
         <div class="section">
             <h2>CPF Contribution</h2>
             <table>
@@ -101,7 +93,6 @@
             </table>
         </div>
 
-        <!-- Net Pay -->
         <div class="result">
             <h2>NET PAY</h2>
             <div class="net-pay">SGD <span id="net">4300.00</span></div>
@@ -114,47 +105,58 @@
 
     <script>
         function updatePeriod() {
-            const month = document.getElementById('month').value;
-            const year = document.getElementById('year').value;
-            document.getElementById('displayPeriod').textContent = month + " " + year;
+            document.getElementById('displayPeriod').textContent = 
+                document.getElementById('month').value + " " + document.getElementById('year').value;
         }
 
-        function getCPFRates(ageGroup) {
-            switch(ageGroup) {
-                case "below55": return {emp: 20, er: 17};
-                case "55-60":   return {emp: 18, er: 16};
-                case "60-65":   return {emp: 12.5, er: 12.5};
-                case "65-70":   return {emp: 7.5, er: 9};
-                case "above70": return {emp: 5, er: 7.5};
-                default: return {emp: 20, er: 17};
+        function getCPFRates(age) {
+            switch(age) {
+                case "below55": return {emp:20, er:17};
+                case "55-60": return {emp:18, er:16};
+                case "60-65": return {emp:12.5, er:12.5};
+                case "65-70": return {emp:7.5, er:9};
+                case "above70": return {emp:5, er:7.5};
+                default: return {emp:20, er:17};
             }
         }
 
         function calculateAll() {
-            let gross = 0;
-            gross += parseFloat(document.getElementById('monthlySalary').value) || 0;
-            gross += (parseFloat(document.getElementById('weekdayHours').value) || 0) * (parseFloat(document.getElementById('weekdayRate').value) || 0);
-            gross += (parseFloat(document.getElementById('weekendHours').value) || 0) * (parseFloat(document.getElementById('weekendRate').value) || 0);
-            gross += (parseFloat(document.getElementById('phHours').value) || 0) * (parseFloat(document.getElementById('phRate').value) || 0);
-            gross += (parseFloat(document.getElementById('otHours').value) || 0) * (parseFloat(document.getElementById('otRate').value) || 0);
-            gross += parseFloat(document.getElementById('transport').value) || 0;
-            gross += parseFloat(document.getElementById('commission').value) || 0;
+            let cpfGross = 0;   // Amount subject to CPF
+            let totalGross = 0; // Total Gross Pay (including transport)
 
+            // CPF-liable items
+            cpfGross += parseFloat(document.getElementById('monthlySalary').value) || 0;
+            cpfGross += (parseFloat(document.getElementById('weekdayHours').value) || 0) * (parseFloat(document.getElementById('weekdayRate').value) || 0);
+            cpfGross += (parseFloat(document.getElementById('weekendHours').value) || 0) * (parseFloat(document.getElementById('weekendRate').value) || 0);
+            cpfGross += (parseFloat(document.getElementById('phHours').value) || 0) * (parseFloat(document.getElementById('phRate').value) || 0);
+            cpfGross += (parseFloat(document.getElementById('otHours').value) || 0) * (parseFloat(document.getElementById('otRate').value) || 0);
+            cpfGross += parseFloat(document.getElementById('commission').value) || 0;
+
+            // Total Gross (including Transport Incentive)
+            totalGross = cpfGross + (parseFloat(document.getElementById('transport').value) || 0);
+
+            // CPF Calculation
             const applyCPF = document.getElementById('applyCPF').checked;
             let empCPF = 0, erCPF = 0;
 
             if (applyCPF) {
                 const rates = getCPFRates(document.getElementById('ageGroup').value);
-                empCPF = gross * (rates.emp / 100);
-                erCPF = gross * (rates.er / 100);
+                empCPF = cpfGross * (rates.emp / 100);
+                erCPF = cpfGross * (rates.er / 100);
             }
 
+            // Display
+            document.getElementById('wdAmount').textContent = ((parseFloat(document.getElementById('weekdayHours').value)||0) * (parseFloat(document.getElementById('weekdayRate').value)||0)).toFixed(2);
+            document.getElementById('weAmount').textContent = ((parseFloat(document.getElementById('weekendHours').value)||0) * (parseFloat(document.getElementById('weekendRate').value)||0)).toFixed(2);
+            document.getElementById('phAmount').textContent = ((parseFloat(document.getElementById('phHours').value)||0) * (parseFloat(document.getElementById('phRate').value)||0)).toFixed(2);
+            document.getElementById('otAmount').textContent = ((parseFloat(document.getElementById('otHours').value)||0) * (parseFloat(document.getElementById('otRate').value)||0)).toFixed(2);
+
+            document.getElementById('gross').textContent = totalGross.toFixed(2);
             document.getElementById('empRate').textContent = applyCPF ? getCPFRates(document.getElementById('ageGroup').value).emp + "%" : "0%";
             document.getElementById('erRate').textContent = applyCPF ? getCPFRates(document.getElementById('ageGroup').value).er + "%" : "0%";
             document.getElementById('empCPF').textContent = empCPF.toFixed(2);
             document.getElementById('erCPF').textContent = erCPF.toFixed(2);
-            document.getElementById('gross').textContent = gross.toFixed(2);
-            document.getElementById('net').textContent = (gross - empCPF).toFixed(2);
+            document.getElementById('net').textContent = (totalGross - empCPF).toFixed(2);
         }
 
         window.onload = () => {
